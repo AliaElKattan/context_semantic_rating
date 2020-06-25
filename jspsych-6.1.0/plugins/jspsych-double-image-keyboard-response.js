@@ -134,7 +134,7 @@ jsPsych.plugins["double-image-keyboard-response"] = (function() {
 //for rating task ONLY
 
     var space = "<span style='display:inline-block; width:80px;'></span>";
-    html += "<br> <br> <br>" + space + "1" + space + "2" + space + "3" + space + "4" + space + "5" + space + "<br>" + "Not at all" + space + space + space + space +  "Very related";
+    html += "<br> <br> <br>" + space + "1" + space + "2" + space + "3" + space + "4" + space + "5" + space + "<br>" + "Not at all" + space + space + space + space +  "Very much";
 
     // render
     display_element.innerHTML = html;

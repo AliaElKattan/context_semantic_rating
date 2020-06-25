@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Context Semantic - Rating</title>
+    <script src="jspsych-6.1.0/jspsych.js"></script>
+    <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
+    <!-- <script src="jspsych-6.1.0/plugins/jspsych-multi-stim-multi-response.js"></script> -->
+    <script src="jspsych-6.1.0/plugins/jspsych-double-image-keyboard-response.js"></script>
+    <script src="files.js"></script>
+</head>
+
+
+<body>
+
+
+<!-- var fs = require('fs');
+var files = fs.readdirSync('/assets/photos/'); -->
+
+    <script>
+
+    // All jsPsych experiments are defined by a timeline. The timeline is an array that contains the set of trials we want to runin the experiment. We can start by defining the timeline array. 
+    
+
+var welcome_text = "On the following screens, you will see pairs of objects.<br><br> On each trial, you will be asked to judge,<br>on a scale of 1 to 5, to what degree two objects are related.<br><br> You will have the opportunity to complete several practice trials.<br>Press the spacebar when you are ready to begin practice.<br>";
+
+var transition_text = "You are finished with the practice session.<br> Please find the experimenter now if you have any questions. <br> <br> <br> If you are ready to continue, press the spacebar."
+
+var end_text = "You have just finished the experiment!<br><br>Please get the experimenter.";
+
+var timeline = [];
+
+function instructions(text) {
+	var instructions = {
+      type: "html-keyboard-response",
+      stimulus: text
+    };
+    timeline.push(instructions);
+}
+
+
+instructions(welcome_text);
+
+
+function prep_stimuli(folder, img_list) { 
+
+var imgs = []
+
+for (i = 0; i<img_list.length;i++) {
+  imgs.push(folder +"/" + img_list[i]);
+}
+
+var stimuli_pairs = [];
+
+for(i = 0; i<imgs.length;i++) {
+  if(imgs[i].indexOf("_4")>0) {
+    stimuli_pairs.push([imgs[i],imgs[i-3],1]);
+    stimuli_pairs.push([imgs[i],imgs[i-2],2]);
+    stimuli_pairs.push([imgs[i],imgs[i-1],3]);
+    stimuli_pairs.push([imgs[i],imgs[i+1],5]);
+  }
+}
+
+//randomize order
+for(let i = (stimuli_pairs.length - 1); i > 0; i--) {
+  const j = Math.floor(Math.random() * i);
+  const temp = stimuli_pairs[i];
+  stimuli_pairs[i] = stimuli_pairs[j];
+  stimuli_pairs[j] = temp;
+}
+
+return stimuli_pairs;
+}
+
+var stimuli_pairs_0 = prep_stimuli("practice", practice);
+var stimuli_pairs_1 = prep_stimuli("color_reformatted", color_reformatted);
+
+
+function run_trial(stimuli_list) {
+
+var tests = []
+
+for (i =0; i<stimuli_list.length;i++) {
+
+  var prime_img = stimuli_list[i][0];
+  var target_img = stimuli_list[i][1];
+
+  var prob = Math.random();
+  if(prob > 0.5)  {
+    var temp = stimuli_list[i][0];
+    stimuli_list[i][0] = stimuli_list[i][1];
+    stimuli_list[i][1] = temp;
+  }
+
+    var contextual_test = {
+      type: "double-image-keyboard-response",
+      prompt: "Same place?",
+      choices: ['1','2','3','4','5'],
+      stimulus_1: stimuli_list[i][0],
+      stimulus_2: stimuli_list[i][1],
+      post_trial_gap: 500,
+      stimulus_height: 150,
+      on_finish: function(data){
+        if(data.key_press == 65){
+          data.correct = true;
+          } else {
+            data.correct = false;
+          }
+        }
+
+      // todo: record relationship
+
+  };
+
+   tests.push(contextual_test);
+
+      var semantic_test = {
+      type: "double-image-keyboard-response",
+      prompt: "Same category?",
+      choices: ['1','2','3','4','5'],
+      stimulus_1: stimuli_list[i][0],
+      stimulus_2: stimuli_list[i][1],
+      post_trial_gap: 500,
+      stimulus_height: 150,
+      on_finish: function(data){
+        if(data.key_press == 65){
+          data.correct = true;
+          } else {
+            data.correct = false;
+          }
+        }
+
+      // todo: record relationship
+
+  };
+
+   tests.push(semantic_test);
+}
+
+var all_tests = {
+  timeline: tests
+}
+timeline.push(all_tests)
+
+}
+
+run_trial(stimuli_pairs_0);
+
+// todo: only accept spacebar
+instructions(transition_text);
+
+run_trial(stimuli_pairs_1);
+
+instructions(end_text);
+
+  jsPsych.init({
+  timeline: timeline
+});
+
+</script>
+
+
+
+</body>
+</html>
