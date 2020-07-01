@@ -103,24 +103,21 @@ function run_trial(stimuli_list, int_practice) {
 var tests = []
 
 
-for (i =0; i<stimuli_list.length;i++) {
-// for (i=0; i<5;i++) {
+// for (i =0; i<stimuli_list.length;i++) {
+for (i=0; i<5;i++) {
 
   var rating;
   var prime_img = stimuli_list[i][0];
   var target_img = stimuli_list[i][1];
 
   var path = prime_img.indexOf("/");
-  var div = prime_img.indexOf("_");
+  var prime_file = prime_img.substring(path+1,(prime_img.length -4));
+  var target_file = target_img.substring(path+1,(target_img.length -4));
 
-  var prime, target;
-  if (path > 0) {
-      prime = prime_img.substring(path+1,div);
-  } else {
-      prime = prime_img.substring(0, div);
-  }
+  var div = prime_file.indexOf("_");
 
-  var target = target_img.substring(div+3,(target_img.length - 4));
+  var prime = prime_file.substring(0,div);
+  var target = target_file.substring(div+3,target_file.length);
 
 
   var object_relation_name;
@@ -186,7 +183,7 @@ timeline.push(all_tests)
 
 }
 
-run_trial(stimuli_pairs_0, 1);
+// run_trial(stimuli_pairs_0, 1);
 
 // todo: only accept spacebar
 instructions(transition_text);
