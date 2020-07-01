@@ -34,7 +34,6 @@ var timeline = [];
 
 // generate a random subject ID with 15 characters
 var subject_id = jsPsych.randomization.randomID(5);
-var data = jsPsych.data.get().filter({trial_type: 'double-image-keyboard-response'});
 
 // jsPsych.data.addProperties({
 //   subject: subject_id,
@@ -47,6 +46,8 @@ var data = jsPsych.data.get().filter({trial_type: 'double-image-keyboard-respons
 //   target: target,
 //   rating: rating
 // });
+
+jsPsych.data.addProperties({rating: ''});
 
 function instructions(text) {
 	var instructions = {
@@ -102,6 +103,7 @@ var tests = []
 // for (i =0; i<stimuli_list.length;i++) {
 for (i=0; i<5;i++) {
 
+  var rating;
   var prime_img = stimuli_list[i][0];
   var target_img = stimuli_list[i][1];
 
@@ -153,7 +155,7 @@ for (i=0; i<5;i++) {
       stimulus_height: 150,
 
       on_finish: function(data) {
-
+        data.rating = data.key_press - 48;
       },
 
       data: {
@@ -163,7 +165,8 @@ for (i=0; i<5;i++) {
           object_relation: object_relation_name,
           object_relation_code: stimuli_list[i][2],
           prime: prime,
-          target: target
+          target: target,
+          rating: rating
           // prime: prime_img
       }
       // on_finish: function(data){
@@ -216,12 +219,12 @@ instructions(transition_text);
 
 // run_trial(stimuli_pairs_1, 0);
 
-
 instructions(end_text);
   jsPsych.init({
   timeline: timeline,
   on_finish: function(){
-    jsPsych.data.get().localSave('csv','trial_data.csv');
+    jsPsych.data.get().filter({trial_type: 'double-image-keyboard-response'}).ignore(['trial_type', 'trial_index', 'time_elapsed', 'internal_node_id', 'key_press', 'stimulus']).localSave('csv','trial_data.csv');
+    // jsPsych.data.displayData('json');
   ;}
 });
 
