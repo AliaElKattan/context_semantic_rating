@@ -100,8 +100,8 @@ function run_trial(stimuli_list, int_practice) {
 var tests = []
 
 
-// for (i =0; i<stimuli_list.length;i++) {
-for (i=0; i<5;i++) {
+for (i =0; i<stimuli_list.length;i++) {
+// for (i=0; i<5;i++) {
 
   var rating;
   var prime_img = stimuli_list[i][0];
@@ -167,38 +167,9 @@ for (i=0; i<5;i++) {
           prime: prime,
           target: target,
           rating: rating
-          // prime: prime_img
+
       }
-      // on_finish: function(data){
-      //   data.trial_number.push(i + 1);
-      //   data.is_practice.push(int_practice);
-      //   data.question.push("relatedness");
-      //   object_relation_code.push(stimuli_list[i[2]]);
-      //   if(object_relation_code[i] == 1) {
-      //     object_relation_name.push("c&s");
-      //   }
 
-      //   if(object_relation_code[i] == 2) {
-      //     object_relation_name.push("semantic");
-      //   }
-
-      //   if(object_relation_code[i] == 3) {
-      //     object_relation_name.push("contextual");
-      //   }
-
-      //   if(object_relation_code[i] == 5) {
-      //     object_relation_name.push("unrelated");
-      //   }
-
-      //   if(data.key_press == 49){
-      //     data.correct = true;
-      //     } else {
-      //       data.correct = false;
-      //     }
-
-      //   }
-
-      // todo: record relationship
 
   };
 
@@ -217,7 +188,7 @@ run_trial(stimuli_pairs_0, 1);
 // todo: only accept spacebar
 instructions(transition_text);
 
-// run_trial(stimuli_pairs_1, 0);
+run_trial(stimuli_pairs_1, 0);
 
 instructions(end_text);
   jsPsych.init({
